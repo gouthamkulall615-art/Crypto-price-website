@@ -1,7 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { formatMarketCap, formatPrice } from "../utils/formatter";
 const CryptoCard = ({ crypto }) => {
   return (
+    <Link to={`/coin/${crypto.id}`} style={{textDecoration:"none"}}>
     <div className="crypto-card">
       <div className="crypto-header">
         <div className="crypto-info">
@@ -37,6 +39,7 @@ const CryptoCard = ({ crypto }) => {
         </div>
       </div>
     </div>
+    </Link>
   );
 };
 

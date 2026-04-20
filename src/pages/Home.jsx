@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { fetchCryptos } from "../api/coinGecko";
 import CryptoCard from "../components/CryptoCard";
 
@@ -9,29 +9,35 @@ const Home = () => {
   const [sortBy, setSortBy] = useState("market_cap_rank");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [filterList, setFilterList] = useState([]);
+  const hasFetched = useRef(false);
+
   useEffect(() => {
+    if (hasFetched.current) return;
+
+    const fetchCryptoData = async () => {
+      try {
+        const data = await fetchCryptos();
+        setCryptoList(data);
+        hasFetched.current = true;
+      } catch (error) {
+        console.log("Error fetching crypto", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchCryptoData();
   }, []);
 
-  useEffect(() => {
-    filterAndSort();
-  }, [sortBy, cryptoList]);
+  const processedList = React.useMemo(() => {
+    let filtered = cryptoList.filter((crypto) => {
+      return (
+        crypto.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        crypto.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    });
 
-  const fetchCryptoData = async () => {
-    try {
-      const data = await fetchCryptos();
-      setCryptoList(data);
-    } catch (error) {
-      console.log("Error fetching crypto", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const filterAndSort = () => {
-    let filtered = [...cryptoList];
-    filtered.sort((a, b) => {
+    return filtered.sort((a, b) => {
       switch (sortBy) {
         case "name":
           return a.name.localeCompare(b.name);
@@ -47,8 +53,7 @@ const Home = () => {
           return a.market_cap_rank - b.market_cap_rank;
       }
     });
-    setFilterList(filtered);
-  };
+  }, [cryptoList, searchQuery, sortBy]);
 
   return (
     <div className="app">
@@ -58,6 +63,7 @@ const Home = () => {
             <h1>🚀 Crypto Tracker</h1>
             <p>Real-time cryptocurrency prices and market data</p>
           </div>
+
           <div className="search-section">
             <input
               type="text"
@@ -69,18 +75,20 @@ const Home = () => {
           </div>
         </div>
       </header>
+
       <div className="controls">
         <div className="filter-group">
           <label>Sort by:</label>
           <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
             <option value="market_cap_rank">Rank</option>
             <option value="name">Name</option>
-            <option value="price">Price(low to High)</option>
-            <option value="price_desc">Price(High to Low)</option>
+            <option value="price">Price (Low to High)</option>
+            <option value="price_desc">Price (High to Low)</option>
             <option value="change">24h Change</option>
             <option value="market_cap">Market Cap</option>
           </select>
         </div>
+
         <div className="view-toggle">
           <button
             className={viewMode === "grid" ? "active" : ""}
@@ -104,9 +112,9 @@ const Home = () => {
         </div>
       ) : (
         <div className={`crypto-container ${viewMode}`}>
-          {filterList.map((crypto, key) => {
-            return <CryptoCard key={key} crypto={crypto} />;
-          })}
+          {processedList.map((crypto) => (
+            <CryptoCard key={crypto.id} crypto={crypto} />
+          ))}
         </div>
       )}
     </div>
