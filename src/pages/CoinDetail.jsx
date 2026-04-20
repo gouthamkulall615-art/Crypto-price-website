@@ -136,7 +136,14 @@ const CoinDetail = () => {
 
             <div className="chart-section">
               <h3>Price chart (7 days)</h3>
-              <ResponsiveContainer width="100%" height={400}>
+              <ResponsiveContainer
+                width="100%"
+                height={
+                  typeof window !== "undefined" && window.innerWidth < 768
+                    ? 250
+                    : 400
+                }
+              >
                 <LineChart data={chartData}>
                   <CartesianGrid
                     strokeDasharray="3 3"
@@ -145,12 +152,20 @@ const CoinDetail = () => {
                   <XAxis
                     dataKey="time"
                     stroke="#9ca3af"
-                    style={{ fontSize: "12px" }}
+                    style={{ fontSize: "10px" }}
+                    interval={
+                      typeof window !== "undefined" && window.innerWidth < 768
+                        ? 6
+                        : 2
+                    }
+                    tick={{ fontSize: window.innerWidth < 768 ? 9 : 12 }}
                   />
                   <YAxis
                     stroke="#9ca3af"
                     style={{ fontSize: "12px" }}
                     domain={["auto", "auto"]}
+                    width={window.innerWidth < 768 ? 45 : 60}
+                    tickFormatter={(val) => `$${Number(val).toLocaleString()}`}
                   />
                   <Tooltip
                     contentStyle={{
