@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { fetchCryptos } from "../api/coinGecko";
 import CryptoCard from "../components/CryptoCard";
+import { Sun, Moon } from "lucide-react";
 
 const Home = () => {
   const [cryptoList, setCryptoList] = useState([]);
@@ -8,8 +9,18 @@ const Home = () => {
   const [viewMode, setViewMode] = useState("grid");
   const [sortBy, setSortBy] = useState("market_cap_rank");
   const [searchQuery, setSearchQuery] = useState("");
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "light";
+  });
 
   const hasFetched = useRef(false);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  
 
   useEffect(() => {
     if (hasFetched.current) return;
@@ -73,6 +84,15 @@ const Home = () => {
               value={searchQuery}
             />
           </div>
+
+          <button
+            className="theme-toggle"
+            onClick={() =>
+              setTheme((prev) => (prev === "light" ? "dark" : "light"))
+            }
+          >
+            {theme === "light" ? <Moon className="moon" /> : <Sun  className="sun"/>}
+          </button>
         </div>
       </header>
 
