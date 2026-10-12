@@ -1,16 +1,91 @@
-# React + Vite
+# CoinPulse
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A cryptocurrency tracking web app built with React and Vite. CoinPulse lets you keep an eye on live coin prices, market trends, and portfolio changes — all in one clean interface.
 
-Currently, two official plugins are available:
+Live site: https://coinpulse-beryl.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## What it does
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Browse real-time cryptocurrency prices and market data
+- Search and filter coins by name or symbol
+- View price charts and market cap information
+- Responsive layout that works on both desktop and mobile
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech stack
+
+- **React** — component-based UI
+- **Vite** — fast development server and build tool
+- **JavaScript (ES6+)**
+- **Vercel** — deployment and hosting
+
+---
+
+## Getting started
+
+Make sure you have Node.js installed, then follow these steps:
+
+**Clone the repository**
+
+```bash
+git clone https://github.com/gouthamkulall615-art/coinpulse.git
+cd coinpulse
+```
+
+**Install dependencies**
+
+```bash
+npm install
+```
+
+**Start the development server**
+
+```bash
+npm run dev
+```
+
+Open your browser and go to `http://localhost:5173`. The app will reload automatically when you make changes.
+
+---
+
+## Building for production
+
+```bash
+npm run build
+```
+
+This creates an optimized build in the `dist` folder, ready to deploy.
+
+To preview the production build locally:
+
+```bash
+npm run preview
+```
+
+---
+
+## Project structure
+
+```
+coinpulse/
+  public/         Static assets (favicon, images)
+  src/            Application source code
+  index.html      Entry HTML file
+  vite.config.js  Vite configuration
+  package.json    Project dependencies and scripts
+```
+
+---
+
+## Deployment
+
+The app is deployed on Vercel. Any push to the `main` branch triggers an automatic deployment.
+
+---
+
+## License
+
+This project is open source. Feel free to use or adapt it for your own projects.
